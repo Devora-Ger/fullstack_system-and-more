@@ -1,1 +1,91 @@
-server-client
+The corona management system
+The site displays a list of all registered members
+The patients entered into the system. And when you choose one of them, his personal card opens with additional details about him.
+The database is made up of 3 tables, a table of persons, a table of corona patients and a table of vaccinations.
+In the prototype, a number of actions can be selected on the website: adding a member, displaying all members, displaying the patient's details with the date of his illness and recovery and the vaccinations he received, deleting a member from the system, adding a vaccine and adding a patient to the database of corona patients and also various statistics regarding the members.
+Screenshots of the prototype app:
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+SQL queries:
+Create Tables:
+CREATE TABLE IF NOT EXISTS patients(
+    patient_id INTEGER PRIMARY KEY, 
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(50) NOT NULL,
+    birth_date DATE NOT NULL,
+    telephone VARCHAR(10), 
+    cell_phone VARCHAR(10) NOT NULL
+    );
+
+
+CREATE TABLE IF NOT EXISTS corona_vaccination(
+    patient_id INTEGER NOT NULL,
+    vaccination_date DATE NOT NULL,
+    vacc_manufacturer VARCHAR(20) NOT NULL,
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
+    );
+
+CREATE TABLE IF NOT EXISTS corona_patients(
+    patient_id INTEGER PRIMARY KEY,
+    sick_date DATE,
+    recovered_date DATE,
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
+    );
+
+Complicated queries:
+SELECT COUNT(*) AS total_sick_last_month
+FROM corona_patients
+WHERE sick_date BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) AND CURRENT_DATE();
+
+SELECT COUNT(*) AS total_unvaccinated
+FROM patients LEFT JOIN corona_vaccination 
+ON patients.patient_id = corona_vaccination.patient_id
+WHERE corona_vaccination.patient_id IS NULL;
+
+
+
+Server side:
+Download:
+Download python:
+https://www.python.org/ftp/python/3.12.2/python-3.12.2-amd64.exe
+Download Pycharm:
+https://www.jetbrains.com/pycharm/download/download-thanks.html?platform=windows
+Download mySql:
+https://dev.mysql.com/downloads/file/?id=526407
+Install:
+In the python project at Pycharm Terminal:
+To import mysql:
+Install package mysql-connector-python
+To import fastapi:
+Pip install “fastapi[all]”
+To refresh the page and the changes will be saved, write in the terminal:
+Uvicorn main:app --reload
+To run the server you have to run in the terminal:
+Python main.py
+To stop it ^C.
+Client side:
+Download node.js 
+https://nodejs.org/dist/v20.12.0/node-v20.12.0-x64.msi
+installs:
+To install React library write in the cmd in the file that you want react there:
+Npx create-react-app “app_name”
+To import router:
+Npm install react-router-dom
+To import axios:
+Npm install I --save axios
+To run the client write in the terminal of the project nmp start
+Stop it with ^C.
+(for the prototype in python install streamlit)
+
+
+
+
+
